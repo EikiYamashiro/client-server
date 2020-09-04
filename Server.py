@@ -14,7 +14,8 @@ def main():
     try:
         com2 = enlace('COM2') #Arduino 2
         com2.enable() 
-
+        imageW = "recebidaCopia.png"
+        
         #Recebe o tamanho da imagem
         print("Recebendo o tamanho da imagem...")
         
@@ -28,10 +29,13 @@ def main():
 
         print("-------------------------------------")
         print("Recebendo a imagem...")
-        rxBufferServer, nRxServer = com2.getData(image_size_int)
+        rxBuffer, nRxServer = com2.getData(image_size_int)
         sizeServer = nRxServer
         sizeServerBytes = nRxServer.to_bytes(4, byteorder='big')
         com2.sendData(sizeServerBytes)
+        f = open(imageW, 'wb')
+        f.write(rxBuffer)
+        f.close()
         time.sleep(0.1)
         print("-------------------------------------")
         print("Comunicação encerrada")
